@@ -17,7 +17,7 @@ std::list<sf::Vector2f> points;
 sf::Color p_color(sf::Color::Black);
 AppMode current_app_mode = Standby;
 
-void ProcessEvents(sf::Event& e,sf::RenderWindow& w)
+void ProcessMouseEvents(sf::Event& e,sf::RenderWindow& w)
 {
     if(e.type == sf::Event::MouseButtonReleased){
         current_app_mode = Standby;
@@ -58,6 +58,7 @@ void DrawPoints(sf::RenderWindow& w)
     }
 }
 
+
 int main()
 {
     sf::RenderWindow w(sf::VideoMode({800,600}),"Simple Drawer");
@@ -70,7 +71,15 @@ int main()
         if(e.type == sf::Event::Closed){
             w.close();
         }
-        ProcessEvents(e,w);
+
+        if(e.type == sf::Event::Resized){
+            sf::FloatRect r({0.0f,0.0f},{(float)e.size.width,(float)e.size.height});
+            sf::View v(r);
+            w.setView(v);
+
+        }
+
+        ProcessMouseEvents(e,w);
         w.clear(sf::Color::White);
         DrawPoints(w);
         w.display();
